@@ -1,9 +1,9 @@
-
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import api from '../../services/api';
 import AuthContext from '../../context/AuthContext';
+import Profile from '../../components/Profile/Profile';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -96,6 +96,8 @@ const Dashboard = () => {
   
   return (
     <div className="dashboard">
+      <Profile />
+      
       <header>
         <h2>daily reminders</h2>
         <a href="#" className="view-all">view all</a>
