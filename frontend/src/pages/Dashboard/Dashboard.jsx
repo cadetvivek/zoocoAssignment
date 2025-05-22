@@ -96,11 +96,20 @@ const Dashboard = () => {
   
   return (
     <div className="dashboard">
+      {/* Pet-themed animated background */}
+      <div className="pet-background">
+        <div className="animal dog-1"></div>
+        <div className="animal dog-2"></div>
+        <div className="animal cat-1"></div>
+        <div className="animal cat-2"></div>
+        <div className="animal toy"></div>
+        <div className="animal food-bowl"></div>
+      </div>
       <Profile />
       
       <header>
         <h2>daily reminders</h2>
-        <a href="#" className="view-all">view all</a>
+        <a href="#" className="view-all"></a>
       </header>
       
       <div className="calendar-section">
