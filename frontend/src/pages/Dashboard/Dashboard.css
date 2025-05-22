@@ -386,6 +386,16 @@ header h2:hover::after {
 
 .timeSlot-section {
   margin-bottom: 1.5rem;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  background-color: white;
+}
+
+.timeSlot-section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 .timeSlot-section h3 {
@@ -417,6 +427,22 @@ header h2:hover::after {
   position: relative;
   transition: transform 0.3s, box-shadow 0.3s;
   border-left: 4px solid #8E54E9;
+}
+
+/* Different colors for each time slot's reminders */
+.timeSlot-section:nth-of-type(1) .reminder-card {
+  border-left: 4px solid #ffc107; /* Morning - Sunny yellow */
+  background-color: rgba(255, 193, 7, 0.05);
+}
+
+.timeSlot-section:nth-of-type(2) .reminder-card {
+  border-left: 4px solid #2196f3; /* Afternoon - Blue sky */
+  background-color: rgba(33, 150, 243, 0.05);
+}
+
+.timeSlot-section:nth-of-type(3) .reminder-card {
+  border-left: 4px solid #9c27b0; /* Evening - Purple dusk */
+  background-color: rgba(156, 39, 176, 0.05);
 }
 
 .reminder-card:hover {
@@ -478,6 +504,25 @@ header h2:hover::after {
 .pending-goals, .completed-goals {
   margin-bottom: 2rem;
   animation: fadeInStaggered 1s ease-out;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pending-goals {
+  background-color: rgba(233, 30, 99, 0.05);
+  border-left: 4px solid #e91e63; /* Pink for pending goals */
+}
+
+.completed-goals {
+  background-color: rgba(76, 175, 80, 0.05);
+  border-left: 4px solid #4caf50; /* Green for completed goals */
+}
+
+.pending-goals:hover, .completed-goals:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 .pending-goals h3, .completed-goals h3 {
@@ -498,6 +543,50 @@ header h2:hover::after {
   height: 3px;
   background: linear-gradient(90deg, #4776E6, #8E54E9);
   border-radius: 3px;
+}
+
+/* Styling for completed reminders */
+.completed-reminder {
+  position: relative;
+  border-left: 4px solid #4caf50;
+  background-color: rgba(76, 175, 80, 0.05);
+}
+
+.completed-reminder::before {
+  content: '✓';
+  position: absolute;
+  top: 0.8rem;
+  right: 0.8rem;
+  width: 24px;
+  height: 24px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+.completed-reminder h4 {
+  text-decoration: line-through;
+  color: #666;
+}
+
+.no-reminders {
+  padding: 1rem;
+  color: #666;
+  text-align: center;
+  font-style: italic;
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  margin: 0.5rem 0 1.5rem 0;
 }
 
 .add-button {

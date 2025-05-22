@@ -57,10 +57,28 @@ const Dashboard = () => {
 
   const handleCompleteReminder = async (id) => {
     try {
+      // Find the reminder being completed
+      const reminderToComplete = reminders.find(r => r._id === id);
+      if (!reminderToComplete) return;
+      
+      // Optimistically update UI before API response
+      setReminders(prevReminders => 
+        prevReminders.map(reminder => 
+          reminder._id === id ? { ...reminder, completed: true } : reminder
+        )
+      );
+      
+      // Show success message
+      alert(`Reminder "${reminderToComplete.title}" marked as completed!`);
+      
+      // Send the completion request to the server
       await api.patch(`/api/reminders/${id}/complete`);
-      fetchReminders();
+      
+      // We already updated the UI optimistically, no need to refresh all reminders
     } catch (error) {
       console.error('Error completing reminder:', error);
+      // If there was an error, revert the optimistic update
+      fetchReminders();
     }
   };
 
@@ -84,13 +102,32 @@ const Dashboard = () => {
     setSelectedDate(date);
   };
 
-  // Filter reminders by timeSlot
+  // Filter reminders by timeSlot and completion status
   const getRemindersByTimeSlot = (timeSlot) => {
     return reminders.filter(reminder => 
       reminder.timeSlot === timeSlot && 
+      format(new Date(reminder.startDateTime), 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd') &&
+      !reminder.completed
+    );
+  };
+
+  // Get all pending reminders for the selected date
+  const getPendingReminders = () => {
+    return reminders.filter(reminder => 
+      !reminder.completed && 
       format(new Date(reminder.startDateTime), 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd')
     );
   };
+
+  // Get all completed reminders for the selected date
+  const getCompletedReminders = () => {
+    return reminders.filter(reminder => 
+      reminder.completed && 
+      format(new Date(reminder.startDateTime), 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd')
+    );
+  };
+  
+  // We can remove these duplicate functions since we already have getPendingReminders and getCompletedReminders
 
   const calendarDays = generateCalendarDays();
   
@@ -208,13 +245,53 @@ const Dashboard = () => {
       </div>
 
       <div className="pending-goals">
-        <h3>pending goals</h3>
-        {/* List pending goals */}
+        <h3>Pending Goals</h3>
+        {getPendingReminders().length > 0 ? (
+          getPendingReminders().map(reminder => (
+            <div key={reminder._id} className="reminder-card">
+              <div className="pet-icon">
+                {reminder.pet && pets.find(p => p._id === reminder.pet)?.type === 'Dog' ? '🐕' : '🐈'}
+                <span>For {pets.find(p => p._id === reminder.pet)?.name || 'Pet'}</span>
+              </div>
+              <h4>{reminder.title}</h4>
+              <div className="reminder-details">
+                <span>At {format(new Date(reminder.startDateTime), 'h:mm a')}</span>
+                <span>{reminder.category}</span>
+              </div>
+              <div className="reminder-actions">
+                <button onClick={() => handleCompleteReminder(reminder._id)}>✓</button>
+                <button onClick={() => handleEditReminder(reminder._id)}>✎</button>
+                <button onClick={() => handleDeleteReminder(reminder._id)}>🗑</button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="no-reminders">No pending goals for today</p>
+        )}
       </div>
 
       <div className="completed-goals">
-        <h3>completed goals</h3>
-        {/* List completed goals */}
+        <h3>Completed Goals</h3>
+        {getCompletedReminders().length > 0 ? (
+          getCompletedReminders().map(reminder => (
+            <div key={reminder._id} className="reminder-card completed-reminder">
+              <div className="pet-icon">
+                {reminder.pet && pets.find(p => p._id === reminder.pet)?.type === 'Dog' ? '🐕' : '🐈'}
+                <span>For {pets.find(p => p._id === reminder.pet)?.name || 'Pet'}</span>
+              </div>
+              <h4>{reminder.title}</h4>
+              <div className="reminder-details">
+                <span>At {format(new Date(reminder.startDateTime), 'h:mm a')}</span>
+                <span>{reminder.category}</span>
+              </div>
+              <div className="reminder-actions">
+                <button onClick={() => handleDeleteReminder(reminder._id)}>🗑</button>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="no-reminders">No completed goals for today</p>
+        )}
       </div>
 
       <button className="add-button" onClick={handleAddReminder}>+</button>

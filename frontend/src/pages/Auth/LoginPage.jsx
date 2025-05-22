@@ -45,7 +45,12 @@ const LoginPage = () => {
   };
 
   return (
+   
     <div className="auth-container">
+      
+
+
+     
       <h2>Login</h2>
       {error && <div className="error-message">{error}</div>}
       
@@ -84,7 +89,8 @@ const LoginPage = () => {
       <p className="auth-link">
         Don't have an account? <Link to="/register">Register</Link>
       </p>
-    </div>
+      </div>
+   
   );
 };
 
