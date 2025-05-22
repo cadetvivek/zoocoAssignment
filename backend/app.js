@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 
 app.use(cors({
-  origin: 'http://localhost:5173', 
+  origin: ['http://localhost:5173', 'https://candid-mandazi-949e6c.netlify.app'], 
   credentials: true                 
 }));
 
